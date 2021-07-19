@@ -1,0 +1,5 @@
+python ./scripts/mask_alignment_using_vcf.py -i data/subsampled_alignment_a1_n7149_clockfiltered.fasta -o data/subsampled_alignment.mask.fasta -v data/problematic_sites_sarsCov2.vcf -r Wuhan/Hu-1/2019
+mkdir data/iqtree_output
+iqtree -redo -nt 4 -ninit 10 -me 0.05 -bb 1000 -wbtl -czb -m GTR --prefix data/iqtree_output/michigan_timetree -s data/subsampled_alignment.mask.fasta -o Wuhan/WH01/2019
+treetime --tree data/iqtree_output/michigan_timetree.treefile --dates data/metadata.tsv --aln data/subsampled_alignment.mask.fasta --outdir data/treetime_output --reroot Wuhan/Hu-1/2019 Wuhan/WH01/2019 --confidence --clock-filter 4 --clock-rate 0.0008 --clock-std-dev 0.0004 --coalescent skyline
+treetime mugration --tree data/treetime_output/timetree.nexus --states data/metadata.tsv --attribute student --outdir data/mugration_output --confidence
